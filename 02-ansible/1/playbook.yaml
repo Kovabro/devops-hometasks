@@ -1,0 +1,26 @@
+---
+- name: Config system 1
+  hosts: all
+
+  #tasks:
+  #- name: Hello world
+  #  debug:
+  #    msg: "Hello, world!"
+
+  - name: Install Apache
+    become: yes
+    apt:
+      name: apache2
+      state: present
+
+  - name: Install PHP
+    become: yes
+    apt:
+      name: php
+      state: present
+      
+  - name: Enable Apache
+    shell: systemctl enable apache2
+    args:
+      chdir: /home/vagrant
+      creates: testfile
