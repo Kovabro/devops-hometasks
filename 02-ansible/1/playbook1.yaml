@@ -1,0 +1,12 @@
+---
+- name: conf system
+  hosts: all
+
+  tasks:
+  - name: Install packages
+    apt:
+       pkg:
+       - apache2
+       - php
+       - php-fpm
+       state: present 

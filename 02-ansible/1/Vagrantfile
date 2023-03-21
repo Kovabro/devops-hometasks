@@ -1,7 +1,6 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/debian9"
   config.vm.synced_folder  ".", "/vagrant", disabled: false
-  config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 81, host: 8081
   config.vm.provider "virtualbox" do |vb|
@@ -9,13 +8,13 @@ Vagrant.configure("2") do |config|
       vb.memory = "512"
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
-      apt-get install -y ansible sshpass apache2 php
-      
-      curl https://raw.githubusercontent.com/Fenikks/devops-files/master/02-tools/files/index.html -o /var/www/html/index.html
-      curl https://raw.githubusercontent.com/Fenikks/devops-files/master/02-tools/files/index.php -o /var/www/html/index.php
-      
-  SHELL
+  config.vm.define "master", primary: true do |master|
+  master.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "playbook1.yaml"
+        ansible.become = true
+        ansible.limit = 'all'
+        ansible.inventory_path = "inventory"
+  end
 
-  
+end
 end
