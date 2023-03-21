@@ -1,0 +1,8 @@
+---
+- name: master
+  hosts: all
+
+  tasks:
+  - name: did not have time
+    debug:
+      msg: "did not have time"

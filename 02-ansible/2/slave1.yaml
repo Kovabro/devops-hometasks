@@ -1,0 +1,22 @@
+---
+- name: conf system slave1
+  hosts: all
+
+  tasks:
+  - name: Install packages
+    apt:
+       pkg:
+       - apache2
+       - php
+       - php-fpm
+       state: present 
+
+  - name: change html
+    copy:
+        src: /vagrant/index.html
+        dest: /var/www/html/index.html    
+
+  - name: restart apache2
+    service:
+        name: apache2
+        state: restarted      
